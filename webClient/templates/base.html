@@ -52,13 +52,13 @@
 <div class="container">
     <h2 class="mb-3 font-weight-normal">Figure Finder</h2>
     <form method="POST">
-        <input type="text" id="inputText" name="inputText" class="form-control" placeholder="Insert Continent">
+        <input type="text" id="inputText" name="continent" class="form-control" placeholder="Insert Continent">
         <br>
 
-        <input type="radio" name="gender" id="male" value="male">
+        <input type="radio" name="gender" id="male" value="/male" required>
         <label for="male">Male </label> <br>
 
-        <input type="radio" name="gender" id="female" value="female">
+        <input type="radio" name="gender" id="female" value="/female">
         <label for="female">Female</label>
 
         <br><br>
@@ -71,11 +71,14 @@
     <div class="card mx-auto" style="width: 25rem;">
         <img class="card-img-top" src="https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap">
         <div class="card-body">
-            <p class="card-text"> {{output}}</p>
+            <p class="card-text"> {{name}} - {{continent}}</p>
         </div>
     </div>
     {% endif %}
 
+    {% if error%}
+        <h3 style="color: red">ERROR - {{msg}}</h3>
+    {% endif %}
     <!--<p> Test: {{output}}</p>-->
 </div>
 </body>
