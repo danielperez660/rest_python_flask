@@ -15,7 +15,10 @@
 </head>
 
 <style>
-
+    .event{
+        position: center;
+        font-size: 40px;
+    }
     .card {
         color: #1a1a1a;
     }
@@ -63,16 +66,24 @@
 
         <br><br>
         <button class="btn btn-lg btn-primary" name="submit_button" style="color: white" type="submit" value="submit">Submit</button>
-        <button class="btn btn-lg btn-danger" name="submit_button" style="color: white" value="clear">Clear</button>
+        <button class="btn btn-lg btn-danger" name="submit_button" style="color: white" value="clear" formnovalidate >Clear</button>
     </form>
     <br>
 
     {% if item %}
-    <div class="card mx-auto" style="width: 25rem;">
-        <img class="card-img-top" src="https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap">
-        <div class="card-body">
-            <p class="card-text"> {{name}} - {{continent}}</p>
+    <div>
+        <div class="card mx-auto" style="width: 25rem;">
+            <img class="card-img-top" src={{ url }} alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text"> {{name}} - {{continent}}</p>
+                <p class="card-text"> '{{book_name}}' ({{year}}), written by {{book_auth}}</p>
+            </div>
         </div>
+     </div>
+
+    <br>
+    <div class="event">
+        <p> On this day in the year (±5) this book was published, this happened: {{event}}</p>
     </div>
     {% endif %}
 
