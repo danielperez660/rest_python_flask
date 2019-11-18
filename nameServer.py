@@ -3,6 +3,7 @@ from flask import Flask, jsonify, abort, request
 
 app = Flask(__name__, static_url_path="")
 
+# Defines Variables for the names
 continents = ['europe', 'asia', 'africa', 'north america', 'south america', 'australia']
 
 male_figures = [{'name': 'Albert Einstein', 'gender': 'male', 'continent': 'europe'},
@@ -32,11 +33,13 @@ female_figures = [{'name': 'Alfonsina Storni', 'gender': 'female', 'continent': 
                   {'name': 'Edith Cowan', 'gender': 'female', 'continent': 'australia'}]
 
 
+# Sets up a set of routes to the get person method
 @app.route('/figure/<string:gender>/<continent>/', methods=['GET'])
 @app.route('/figure/<string:gender>/', methods=['GET'])
 @app.route('/figure/', methods=['GET'])
 def get_person(gender=None, continent=None):
 
+    # Checks to see if there is a male and if a continent is specified
     if gender == 'male':
         temp = []
         if continent and continent in continents:
@@ -49,6 +52,7 @@ def get_person(gender=None, continent=None):
             temp = male_figures.copy()
         return jsonify(random.choice(temp))
 
+    # Checks to see if there is a female and if a continent is specified
     elif gender == 'female':
         temp = []
         if continent and continent in continents:
@@ -63,9 +67,11 @@ def get_person(gender=None, continent=None):
     elif not gender:
         return jsonify(random.choice(male_figures+female_figures))
     else:
+        # Error handling
         return 'Unrecognised parameter', 404
 
 
+# Returns all of the figures in the lists for debugging purposes
 @app.route('/all_figures/', methods=['GET'])
 def get_list():
     return jsonify(male_figures+female_figures)

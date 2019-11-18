@@ -6,6 +6,7 @@ import requests
 
 app = Flask(__name__)
 
+# Sets up the initial URLs for my API and the other 2
 REST_FIGURES = 'http://localhost:9999/figure'
 REST_BOOKS = 'https://www.goodreads.com/search/index.xml'
 REST_TODAY = 'http://history.muffinlabs.com/date'
@@ -13,11 +14,13 @@ REST_TODAY = 'http://history.muffinlabs.com/date'
 GOOD_READS_KEY = 'kasyZkeIPzsma2EBH0Lu9w'
 
 
+# Route setup for default home page
 @app.route("/")
 def hello():
     return render_template('base.html', output="", item=False, error=False, msg="")
 
 
+# Form management route where data is requested from my api
 @app.route('/', methods=['POST'])
 def my_form_post():
     query = REST_FIGURES
@@ -34,6 +37,7 @@ def my_form_post():
 
         resp = requests.get(query)
 
+        # Error handling if the response does not have expected content
         if 'name' in str(resp.content) and 'continent' in str(resp.content):
             name = resp.json()['name']
             continent = resp.json()['continent']
@@ -41,6 +45,7 @@ def my_form_post():
             return render_template('base.html', name="", continent="", item=False,
                                    error=True, msg=resp.reason)
 
+        # Requests data from the other apis
         book_name, book_auth, image_url, year = get_books(name)
         event = today_in_history(year)
 
@@ -48,7 +53,7 @@ def my_form_post():
                                error=False, msg="", url=image_url, book_name=book_name, book_auth=book_auth, year=year,
                                event=event)
 
-
+# Gets xml file from good reads and parses it for relevant data
 def get_books(query):
     payload = {'q': query, 'key': GOOD_READS_KEY}
     resp = requests.get(REST_BOOKS, params=payload)
@@ -67,6 +72,7 @@ def get_books(query):
            output['best_book']['image_url'], year
 
 
+# Gets data from today in history as a JSON file and finds relevant data
 def today_in_history(year):
     resp = requests.get(REST_TODAY)
     resp_data = resp.json()['data']
@@ -79,6 +85,7 @@ def today_in_history(year):
             temp.append(i['text'] + " (" + i['year'] + ")")
     output = random.choice(temp)
 
+    # There was no event recorded for this given range of years, returns a default
     if output == "":
         'Probably nothing of value. Who knows...'
     else:
